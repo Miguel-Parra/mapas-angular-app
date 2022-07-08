@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
+import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+
 
 @Component({
   selector: 'app-zoom-range',
@@ -10,7 +12,6 @@ import * as mapboxgl from 'mapbox-gl';
       width: 100%;
       height: 100%
     }
-
     @media (min-width: 1000px){
     .row {
       background-color: white;
@@ -23,7 +24,6 @@ import * as mapboxgl from 'mapbox-gl';
       width: 35vw;
     }
   }
-
   @media (min-width: 600px){
     .row {
       background-color: white;
@@ -36,7 +36,6 @@ import * as mapboxgl from 'mapbox-gl';
       width: 70vw;
     }
     }
-
     @media (min-width: 0px){
     .row {
       background-color: white;
@@ -50,10 +49,24 @@ import * as mapboxgl from 'mapbox-gl';
     }
     }
 
+    #geocoder {
+      background-color: white;
+      border-radius: 5px;
+      position: fixed;
+      top: 50px;
+      padding: 10px;
+      right: 50px;
+      z-index: 9999;
+    
+}
+.mapboxgl-ctrl-geocoder {
+min-width: 100%;
+}
   
     `
   ]
 })
+
 export class ZoomRangeComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('mapa') divMapa!: ElementRef;
@@ -65,9 +78,9 @@ export class ZoomRangeComponent implements AfterViewInit, OnDestroy {
   constructor() { }
 
   ngOnDestroy(): void {
-    this.mapa.off('zoom', ()=>{});
-    this.mapa.off('zoomend', ()=>{});
-    this.mapa.off('move', ()=>{});
+    this.mapa.off('zoom', () => { });
+    this.mapa.off('zoomend', () => { });
+    this.mapa.off('move', () => { });
   }
 
   ngAfterViewInit(): void {
@@ -77,6 +90,39 @@ export class ZoomRangeComponent implements AfterViewInit, OnDestroy {
       center: this.center, // starting position [lng, lat]
       zoom: this.zoomLevel, // starting zoom
     });
+
+    const marcador = new mapboxgl.Marker({}).setLngLat(this.center)
+    .addTo(this.mapa)
+
+    // const geocoder = new MapboxGeocoder({
+    //   accessToken: mapboxgl.accessToken,
+    //   types: 'country,region,place,postcode,locality,neighborhood',
+    // });
+
+    // this.mapa.addControl(geocoder);
+    // geocoder.addTo('#geocoder')
+
+
+    // Add the control to the map.
+    // this.mapa.addControl(
+    //   new MapboxGeocoder({
+    //     accessToken: mapboxgl.accessToken,
+       
+    //   })
+    // );
+
+      const geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+    });
+
+    this.mapa.addControl(geocoder)
+
+    geocoder.on('result', (e) => {
+      console.log(e.result.center)
+      
+      marcador.setLngLat(e.result.center)
+      });
+
     this.mapa.on('zoom', () => {
       this.zoomLevel = this.mapa.getZoom();
     })
