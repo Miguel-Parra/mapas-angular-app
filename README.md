@@ -61,7 +61,7 @@ Su guía de instalación https://docs.mapbox.com/mapbox-gl-js/guides/install/
 
 La aplicación se encuentra desplegada en:
 
-https://formsapp-mp.netlify.app/
+https://mapas-app-angular-mp.netlify.app/
 
 
 <br>
