@@ -10,6 +10,8 @@ import * as mapboxgl from 'mapbox-gl';
       width: 100%;
       height: 100%
     }
+
+    @media (min-width: 1000px){
     .row {
       background-color: white;
       border-radius: 5px;
@@ -18,8 +20,37 @@ import * as mapboxgl from 'mapbox-gl';
       padding: 10px;
       left: 50px;
       z-index: 900;
-      width: 400px
+      width: 35vw;
     }
+  }
+
+  @media (min-width: 600px){
+    .row {
+      background-color: white;
+      border-radius: 5px;
+      position: fixed;
+      bottom: 50px;
+      padding: 10px;
+      left: 50px;
+      z-index: 900;
+      width: 70vw;
+    }
+    }
+
+    @media (min-width: 0px){
+    .row {
+      background-color: white;
+      border-radius: 5px;
+      position: fixed;
+      bottom: 50px;
+      padding: 10px;
+      left: 50px;
+      z-index: 900;
+      width: 90vw;
+    }
+    }
+
+  
     `
   ]
 })
